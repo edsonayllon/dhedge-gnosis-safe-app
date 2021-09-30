@@ -2,6 +2,7 @@ import { FC, useState, useContext } from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Tab, Title } from '@gnosis.pm/safe-react-components'
 import styled from "styled-components";
+import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
 
 import { GlobalState } from 'GlobalState';
 import InvestorContainer from './InvestorContainer';
@@ -32,11 +33,13 @@ const Container = styled.form`
   grid-template-columns: 1fr;
   grid-column-gap: 1rem;
   grid-row-gap: 1rem;
+  background-color: white;
 `;
 
 const StepperContainer: FC = () => {
   const [selected, setSelected] = useState('1')
   const [state, setState] = useContext(GlobalState)
+  const { safe } = useSafeAppsSDK();
 
   const handleChange = (tab: string) => {
     setSelected(tab);
@@ -47,7 +50,7 @@ const StepperContainer: FC = () => {
     <ThemeProvider theme={theme}>
       <Container>
         <div className = "row-title space-between">
-          <Title size="sm">dHEDGE</Title>
+          <Title size="sm">{safe.safeAddress ? safe.safeAddress : "no safe address detected"}</Title>
           <Tab
               onChange={handleChange}
               selectedTab={selected}
